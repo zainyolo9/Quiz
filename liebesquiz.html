@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ultimate Zain Quiz ♥</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #e6f2ff;
+            text-align: center;
+            touch-action: manipulation;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Hintergrund-Elemente */
+        .bg-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+        }
+        
+        .bg-element {
+            position: absolute;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        #bg-fox {
+            width: 100px;
+            height: 60px;
+            top: 20%;
+            left: 10%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60"><path d="M30 40 Q40 10 70 30 L80 20 Q85 25 75 35 L85 40 Q80 50 65 45 L60 55 Q50 60 40 50 Z" fill="%23118AB2"/></svg>');
+        }
+        
+        #bg-mango {
+            width: 80px;
+            height: 80px;
+            top: 30%;
+            right: 15%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 50 Q50 10 70 50 Q80 70 60 90 Q40 80 30 50 Z" fill="%23FFD166"/></svg>');
+        }
+        
+        #bg-44 {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 15%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="20" y="20" width="15" height="60" fill="%23EF476F"/><rect x="20" y="20" width="40" height="15" fill="%23EF476F"/><rect x="65" y="20" width="15" height="60" fill="%23EF476F"/><rect x="45" y="20" width="40" height="15" fill="%23EF476F"/></svg>');
+        }
+        
+        #bg-2004 {
+            width: 120px;
+            height: 60px;
+            bottom: 15%;
+            right: 10%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"><rect x="10" y="10" width="20" height="80" fill="%2306D6A0"/><rect x="10" y="10" width="60" height="20" fill="%2306D6A0"/><rect x="50" y="50" width="60" height="20" fill="%2306D6A0"/><rect x="50" y="10" width="20" height="80" fill="%2306D6A0"/><rect x="110" y="10" width="20" height="80" fill="%2306D6A0"/><rect x="110" y="10" width="60" height="20" fill="%2306D6A0"/><rect x="150" y="50" width="60" height="20" fill="%2306D6A0"/><rect x="150" y="10" width="20" height="80" fill="%2306D6A0"/><rect x="170" y="10" width="20" height="80" fill="%2306D6A0"/></svg>');
+        }
+        
+        #start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(230, 242, 255, 0.9);
+            z-index: 100;
+        }
+        
+        #start-button {
+            padding: 15px 30px;
+            font-size: 20px;
+            background-color: #118ab2;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        #start-button:hover {
+            background-color: #0d7a9c;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        #quiz-container, #flower-container {
+            max-width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+            display: none;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        #flower-container {
+            display: none;
+        }
+        
+        .question {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #d23669;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        button {
+            padding: 12px;
+            font-size: 18px;
+            background-color: #ffcad4;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: #f4acb7;
+        }
+        
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            min-height: 24px;
+        }
+        
+        canvas {
+            display: block;
+            margin: 20px auto;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        h1 {
+            color: #d23669;
+            font-size: 28px;
+        }
+        
+        #animation-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-elements">
+        <div id="bg-fox" class="bg-element"></div>
+        <div id="bg-mango" class="bg-element"></div>
+        <div id="bg-44" class="bg-element"></div>
+        <div id="bg-2004" class="bg-element"></div>
+    </div>
+    
+    <div id="start-screen">
+        <h1>Ultimate Zain Quiz</h1>
+        <p>Teste wie gut du mich kennst!</p>
+        <button id="start-button">Quiz starten</button>
+    </div>
+    
+    <canvas id="animation-canvas"></canvas>
+    
+    <div id="quiz-container">
+        <h1>Ultimate Zain Quiz ♥</h1>
+        <p>Beantworte alle Fragen richtig, um eine Überraschung zu bekommen!</p>
+        <div id="question-1" class="question-section">
+            <div class="question">Frage 1: In welchem Jahr bin ich geboren?</div>
+            <div class="options">
+                <button onclick="checkAnswer(1, 'A')">A. 2003</button>
+                <button onclick="checkAnswer(1, 'B')">B. 2005</button>
+                <button onclick="checkAnswer(1, 'C')">C. 2004</button>
+            </div>
+        </div>
+        <div id="question-2" class="question-section hidden">
+            <div class="question">Frage 2: Was ist meine Lieblingsfarbe?</div>
+            <div class="options">
+                <button onclick="checkAnswer(2, 'A')">A. Rot</button>
+                <button onclick="checkAnswer(2, 'B')">B. Blau</button>
+                <button onclick="checkAnswer(2, 'C')">C. Orange</button>
+            </div>
+        </div>
+        <div id="question-3" class="question-section hidden">
+            <div class="question">Frage 3: Was ist meine Lieblingsfrucht?</div>
+            <div class="options">
+                <button onclick="checkAnswer(3, 'A')">A. Blaubeeren</button>
+                <button onclick="checkAnswer(3, 'B')">B. Mango</button>
+                <button onclick="checkAnswer(3, 'C')">C. Wassermelone</button>
+            </div>
+        </div>
+        <div id="question-4" class="question-section hidden">
+            <div class="question">Frage 4: Welches Tier will ich unbedingt haben?</div>
+            <div class="options">
+                <button onclick="checkAnswer(4, 'A')">A. Roter Panda</button>
+                <button onclick="checkAnswer(4, 'B')">B. Schnee Fuchs</button>
+                <button onclick="checkAnswer(4, 'C')">C. Parakeet</button>
+            </div>
+        </div>
+        <div id="question-5" class="question-section hidden">
+            <div class="question">Frage 5: Welche Schuhgröße trage ich?</div>
+            <div class="options">
+                <button onclick="checkAnswer(5, 'A')">A. 44</button>
+                <button onclick="checkAnswer(5, 'B')">B. 43</button>
+                <button onclick="checkAnswer(5, 'C')">C. 45</button>
+            </div>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <div id="flower-container" class="hidden">
+        <h2>Geschafft! Hier ist deine Belohnung ♥</h2>
+        <canvas id="flowerCanvas"></canvas>
+        <p>Tippe auf die Blume, um ihre Farbe zu ändern!</p>
+    </div>
+
+    <script>
+        // Start-Button Logik
+        document.getElementById('start-button').addEventListener('click', function() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('quiz-container').style.display = 'block';
+            document.getElementById('question-1').classList.remove('hidden');
+        });
+
+        // Richtige Antworten
+        const correctAnswers = {
+            1: "C", // 2004
+            2: "B", // Blau
+            3: "B", // Mango
+            4: "B", // Schnee Fuchs
+            5: "A"  // 44
+        };
+
+        // Partikel-System für Animationen
+        const particles = [];
+        const animationCanvas = document.getElementById('animation-canvas');
+        const animationCtx = animationCanvas.getContext('2d');
+        
+        function resizeCanvas() {
+            animationCanvas.width = window.innerWidth;
+            animationCanvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Partikel-Klasse
+        class Particle {
+            constructor(x, y, color, type) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.type = type; // 'flower' oder 'cross'
+                this.size = type === 'flower' ? Math.random() * 8 + 2 : Math.random() * 10 + 5;
+                this.speedX = Math.random() * 6 - 3;
+                this.speedY = Math.random() * 6 - 3;
+                this.rotation = Math.random() * Math.PI * 2;
+                this.rotationSpeed = Math.random() * 0.2 - 0.1;
+                this.life = 100;
+                this.decay = Math.random() * 0.6 + 0.4;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.rotation += this.rotationSpeed;
+                this.life -= this.decay;
+                this.size *= 0.99;
+            }
+            
+            draw() {
+                animationCtx.save();
+                animationCtx.translate(this.x, this.y);
+                animationCtx.rotate(this.rotation);
+                animationCtx.globalAlpha = this.life / 100;
+                
+                if (this.type === 'flower') {
+                    // Blütenblatt zeichnen
+                    animationCtx.fillStyle = this.color;
+                    animationCtx.beginPath();
+                    animationCtx.ellipse(0, 0, this.size, this.size/2, 0, 0, Math.PI * 2);
+                    animationCtx.fill();
+                } else {
+                    // Kreuz zeichnen
+                    animationCtx.strokeStyle = this.color;
+                    animationCtx.lineWidth = 3;
+                    animationCtx.beginPath();
+                    animationCtx.moveTo(-this.size, -this.size);
+                    animationCtx.lineTo(this.size, this.size);
+                    animationCtx.moveTo(this.size, -this.size);
+                    animationCtx.lineTo(-this.size, this.size);
+                    animationCtx.stroke();
+                }
+                
+                animationCtx.restore();
+            }
+        }
+
+        // Animationen erstellen
+        function createFlowerExplosion(x, y) {
+            const colors = ['#FF6B6B', '#FFA3A3', '#FFD166', '#06D6A0', '#118AB2'];
+            for (let i = 0; i < 30; i++) {
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particles.push(new Particle(x, y, color, 'flower'));
+            }
+        }
+
+        function createCrossExplosion(x, y) {
+            for (let i = 0; i < 15; i++) {
+                particles.push(new Particle(x, y, '#ff0000', 'cross'));
+            }
+        }
+
+        // Animationen rendern
+        function animate() {
+            animationCtx.clearRect(0, 0, animationCanvas.width, animationCanvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                if (particles[i].life <= 0) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        let currentQuestion = 1;
+
+        function checkAnswer(questionId, selectedOption) {
+            const button = event.target;
+            const rect = button.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            
+            if (selectedOption === correctAnswers[questionId]) {
+                createFlowerExplosion(x, y);
+                document.getElementById("result").innerText = "Richtig! ♥";
+                document.getElementById("result").style.color = "#06D6A0";
+                
+                setTimeout(() => {
+                    document.getElementById("result").innerText = "";
+                    if (questionId === 5) {
+                        // Quiz erfolgreich beendet
+                        document.getElementById("quiz-container").style.display = "none";
+                        document.getElementById("flower-container").style.display = "block";
+                        initFlowerAnimation();
+                    } else {
+                        // Nächste Frage anzeigen
+                        document.getElementById(`question-${questionId}`).classList.add("hidden");
+                        document.getElementById(`question-${questionId + 1}`).classList.remove("hidden");
+                        currentQuestion++;
+                    }
+                }, 1000);
+            } else {
+                createCrossExplosion(x, y);
+                document.getElementById("result").innerText = "Falsch! Versuche es nochmal.";
+                document.getElementById("result").style.color = "#ff0000";
+                setTimeout(() => {
+                    document.getElementById("result").innerText = "";
+                }, 1500);
+            }
+        }
+
+        // Blumen-Animation
+        function initFlowerAnimation() {
+            const canvas = document.getElementById('flowerCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            function resizeCanvas() {
+                canvas.width = window.innerWidth * 0.8;
+                canvas.height = window.innerHeight * 0.5;
+            }
+            resizeCanvas();
+            
+            let petalColor = '#FF6B6B';
+            let angle = 0;
+            const colors = ['#FF6B6B', '#FFA3A3', '#FFD166', '#06D6A0', '#118AB2', '#073B4C', '#EF476F'];
+            
+            function drawFlower() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const radius = Math.min(canvas.width, canvas.height) * 0.2;
+                
+                // Blütenmitte
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius * 0.3, 0, Math.PI * 2);
+                ctx.fillStyle = '#FFD700';
+                ctx.fill();
+                
+                // Blütenblätter
+                for (let i = 0; i < 8; i++) {
+                    const petalAngle = angle + (i * (Math.PI / 4));
+                    const petalX = centerX + Math.cos(petalAngle) * radius;
+                    const petalY = centerY + Math.sin(petalAngle) * radius;
+                    
+                    ctx.beginPath();
+                    ctx.ellipse(
+                        petalX, petalY, 
+                        radius * 0.6, radius * 0.3, 
+                        petalAngle, 0, Math.PI * 2
+                    );
+                    ctx.fillStyle = petalColor;
+                    ctx.fill();
+                }
+                
+                angle += 0.01;
+                requestAnimationFrame(drawFlower);
+            }
+            
+            canvas.addEventListener('click', () => {
+                petalColor = colors[Math.floor(Math.random() * colors.length)];
+                createFlowerExplosion(canvas.width / 2, canvas.height / 2);
+            });
+            
+            drawFlower();
+        }
+    </script>
+</body>
+</html>
